@@ -1,5 +1,16 @@
-whisard.db : whisard.csv
-	csvs-to-sqlite $< $@
+whisard.db : cases.csv violations.csv
+	csvs-to-sqlite $^ $@
+	sqlite-utils transform $@ cases --pk case_id
+	sqlite-utils transform $@ violations --pk id
+	sqlite-utils add-foreign-key $@ violations case_id cases case_id
+	cat scripts/flsa_details.sql | sqlite3 $@
+	sqlite-utils add-foreign-key $@ flsa_details violation_id violations id
+
+violations.csv : whisard.csv
+	cat $< | python scripts/violations.py > $@
+
+cases.csv : whisard.csv
+	cat $< | python scripts/cases.py > $@
 
 %.csv : whd_%.csv.zip
 	unzip $<
