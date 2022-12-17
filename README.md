@@ -1,6 +1,6 @@
 # Wage and Hour Division Investigation and Enforcement Action Data
 
-The Department of Labor's [Wage and Hour Division](https://en.wikipedia.org/wiki/Wage_and_Hour_Division) investigates and enforces a number of labor laws. The completed investigations, from 2005 onwards, are published quarterly on the pDepartment of Labor Enforcement Dat Catalog](https://enforcedata.dol.gov/views/agency_tools.php).
+The Department of Labor's [Wage and Hour Division](https://en.wikipedia.org/wiki/Wage_and_Hour_Division) investigates and enforces a number of labor laws. The completed investigations, from 2005 onwards, are published quarterly on the [Department of Labor Enforcement Dat Catalog](https://enforcedata.dol.gov/views/agency_tools.php).
 
 This repository contains code to pull down the data and normalize the data into set of three tables.
 
