@@ -1,3 +1,4 @@
 csvkit
 csvs-to-sqlite
 sqlite-utils
+pandas<2
