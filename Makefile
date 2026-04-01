@@ -1,5 +1,6 @@
 whisard.db : cases.csv violations.csv
-	csvs-to-sqlite $^ $@
+	sqlite-utils insert $@ cases cases.csv --csv --detect-types
+	sqlite-utils insert $@ violations violations.csv --csv --detect-types
 	sqlite-utils transform $@ cases --pk case_id
 	sqlite-utils transform $@ violations --pk id
 	sqlite-utils add-foreign-key $@ violations case_id cases case_id
@@ -12,12 +13,10 @@ violations.csv : whisard.csv
 cases.csv : whisard.csv
 	cat $< | python scripts/cases.py > $@
 
-%.csv : whd_%.csv.zip
-	unzip $<
-	csvstack `zipinfo -1 $<` > $@
+whisard.csv : WHD_enforcement.zip
+	unzip -o $<
+	csvstack `zipinfo -1 $<` | python -c "import sys; header=next(sys.stdin); sys.stdout.write(header.lower()); sys.stdout.writelines(sys.stdin)" > $@
+	rm -f `zipinfo -1 $<`
 
-%.csv.zip : data_summary.php
-	wget -O $@ `grep -E $*_[0-9]+.csv.zip data_summary.php | perl -pe 's/^.*?<a href="(.*$*_\d+.csv.zip)".*/\1/'`
-
-data_summary.php :
-	curl 'https://enforcedata.dol.gov/views/data_summary.php' -X POST --data-raw 'agency=whd' > $@
+WHD_enforcement.zip :
+	curl -L -o $@ 'https://data.dol.gov/data-catalog/WHD/enforcement/WHD_enforcement.zip'
