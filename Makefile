@@ -1,6 +1,6 @@
 whisard.db : cases.csv violations.csv
-	sqlite-utils insert $@ cases cases.csv --csv --detect-types
-	sqlite-utils insert $@ violations violations.csv --csv --detect-types
+	sqlite-utils insert $@ cases cases.csv --csv --empty-null
+	sqlite-utils insert $@ violations violations.csv --csv --empty-null
 	sqlite-utils transform $@ cases --pk case_id
 	sqlite-utils transform $@ violations --pk id
 	sqlite-utils add-foreign-key $@ violations case_id cases case_id
